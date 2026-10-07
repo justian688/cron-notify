@@ -1,16 +1,6 @@
-import { timingSafeEqual } from "node:crypto";
+import { isAuthorized } from "@/lib/auth";
 import connectDb from "@/lib/mongodb";
 import Ping from "@/models/Ping";
-
-function isAuthorized(request: Request) {
-  const secret = process.env.CRON_SECRET;
-  if (!secret) return false;
-  const expected = Buffer.from(`Bearer ${secret}`);
-  const received = Buffer.from(request.headers.get("authorization") ?? "");
-  return (
-    expected.length === received.length && timingSafeEqual(expected, received)
-  );
-}
 
 async function createPing(request: Request) {
   if (!isAuthorized(request)) {
