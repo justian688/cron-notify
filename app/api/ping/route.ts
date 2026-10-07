@@ -1,19 +1,19 @@
 import connectDb from "@/lib/mongodb";
-import Record from "@/models/Record";
+import Ping from "@/models/Ping";
 
-async function createRecord() {
+async function createPing() {
   try {
     await connectDb();
-    const record = await Record.create({ triggeredAt: new Date() });
+    const ping = await Ping.create({ triggeredAt: new Date() });
     return Response.json(
-      { id: record._id.toString(), triggeredAt: record.triggeredAt },
+      { id: ping._id.toString(), triggeredAt: ping.triggeredAt },
       { status: 201 },
     );
   } catch (error) {
-    console.error("Failed to save record", error);
-    return Response.json({ error: "Failed to save record" }, { status: 500 });
+    console.error("Failed to save ping", error);
+    return Response.json({ error: "Failed to save ping" }, { status: 500 });
   }
 }
 
-export const GET = createRecord;
-export const POST = createRecord;
+export const GET = createPing;
+export const POST = createPing;
